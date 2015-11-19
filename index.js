@@ -35,12 +35,21 @@ module.exports = function(source) {
 
   var rv = {};
   for (var msgid in catalog.translations['']) {
+    if (msgid === '') {
+      continue;
+    }
     var msg = catalog.translations[''][msgid];
-    if (msgid == '' || (!isEmptyMessage(msg)
-        && !messageIsExcluded(msg, options.referenceExtensions))) {
+    if (!isEmptyMessage(msg) &&
+        !messageIsExcluded(msg, options.referenceExtensions)) {
       rv[msgid] = msg.msgstr;
     }
   }
+
+  rv[''] = {
+    domain: options.domain || 'messages',
+    plural_forms: catalog.headers['plural-forms'],
+    lang: catalog.headers['language'],
+  };
 
   if (options.raw) {
     return rv;

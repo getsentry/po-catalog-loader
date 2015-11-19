@@ -1,0 +1,22 @@
+{
+  "name": "po-catalog-loader",
+  "version": "1.0.0",
+  "description": "A loader that can load PO files and convert them into JSON data.",
+  "author": "getsentry",
+  "description": "PO loader module for webpack",
+  "peerDependencies": {
+    "gettext-parser": "^1.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getsentry/po-catalog-loader.git"
+  },
+  "licenses": "MIT",
+  "bugs": {
+    "url": "https://github.com/getsentry/po-catalog-loader/issues"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "loader-utils": "^0.2.5"
+  }
+}

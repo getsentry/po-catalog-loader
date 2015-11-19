@@ -1,6 +1,6 @@
 {
   "name": "po-catalog-loader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A loader that can load PO files and convert them into JSON data.",
   "author": "getsentry",
   "description": "PO loader module for webpack",

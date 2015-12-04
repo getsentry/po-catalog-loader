@@ -15,15 +15,18 @@ function messageIsExcluded(msg, extensions) {
     return false;
   }
 
-  var reference = (msg.comments || {}).reference || '<unknown>';
-  var filename = reference.split(/:/)[0];
+  var references = ((msg.comments || {}).reference || '<unknown>').split(/\n/);
 
-  for (var i = 0; i < extensions.length; i++) {
-    var ext = extensions[i];
-    if (filename.substr(filename.length - ext.length) == ext) {
-      return false;
+  for (var i = 0; i < references.length; i++) {
+    var filename = references[i].split(/:/)[0];
+    for (var j = 0; j < extensions.length; j++) {
+      var ext = extensions[j];
+      if (filename.substr(filename.length - ext.length) == ext) {
+        return false;
+      }
     }
   }
+
   return true;
 }
 

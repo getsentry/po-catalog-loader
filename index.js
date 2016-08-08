@@ -37,16 +37,32 @@ module.exports = function(source) {
   this.cacheable();
 
   var rv = {};
-  for (var msgid in catalog.translations['']) {
-    if (msgid === '') {
+
+  for (var context in catalog.translations) {
+    if (!catalog.translations.hasOwnProperty(context)) {
       continue;
     }
-    var msg = catalog.translations[''][msgid];
-    if (!isEmptyMessage(msg) &&
-        !messageIsExcluded(msg, options.referenceExtensions)) {
-      rv[msgid] = msg.msgstr;
+
+    for (var msgid in catalog.translations[context]) {
+      if (msgid === '') {
+        continue;
+      }
+
+      var msg = catalog.translations[context][msgid];
+
+      if (!isEmptyMessage(msg) &&
+          !messageIsExcluded(msg, options.referenceExtensions)) {
+        if (context !== '' && options.addJedContext) {
+          rv[context + '\u0004' + msgid] = msg.msgstr;
+        } else {
+          rv[msgid] = msg.msgstr;
+        }
+
+      }
     }
+
   }
+
 
   rv[''] = {
     domain: options.domain || 'messages',

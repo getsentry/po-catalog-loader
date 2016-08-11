@@ -72,7 +72,9 @@ module.exports = function(source) {
 
   if (options.raw) {
     return rv;
+  } else if (options.json) {
+      return JSON.stringify(rv);
   }
 
   return 'module.exports = ' + JSON.stringify(rv) + ';';
-}
+};

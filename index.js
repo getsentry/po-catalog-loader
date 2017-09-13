@@ -31,22 +31,38 @@ function messageIsExcluded(msg, extensions) {
 }
 
 module.exports = function(source) {
-  var options = loaderUtils.parseQuery(this.query);
+  var options = loaderUtils.getOptions(this);
   var catalog = gettextParser.po.parse(source, 'UTF-8');
 
   this.cacheable();
 
   var rv = {};
-  for (var msgid in catalog.translations['']) {
-    if (msgid === '') {
+
+  for (var context in catalog.translations) {
+    if (!catalog.translations.hasOwnProperty(context)) {
       continue;
     }
-    var msg = catalog.translations[''][msgid];
-    if (!isEmptyMessage(msg) &&
-        !messageIsExcluded(msg, options.referenceExtensions)) {
-      rv[msgid] = msg.msgstr;
+
+    for (var msgid in catalog.translations[context]) {
+      if (msgid === '') {
+        continue;
+      }
+
+      var msg = catalog.translations[context][msgid];
+
+      if (!isEmptyMessage(msg) &&
+          !messageIsExcluded(msg, options.referenceExtensions)) {
+        if (context !== '' && options.addJedContext) {
+          rv[context + '\u0004' + msgid] = msg.msgstr;
+        } else {
+          rv[msgid] = msg.msgstr;
+        }
+
+      }
     }
+
   }
+
 
   rv[''] = {
     domain: options.domain || 'messages',
@@ -56,7 +72,9 @@ module.exports = function(source) {
 
   if (options.raw) {
     return rv;
+  } else if (options.json) {
+      return JSON.stringify(rv);
   }
 
   return 'module.exports = ' + JSON.stringify(rv) + ';';
-}
+};

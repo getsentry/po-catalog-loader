@@ -31,7 +31,7 @@ function messageIsExcluded(msg, extensions) {
 }
 
 module.exports = function(source) {
-  var options = loaderUtils.getOptions(this.query);
+  var options = loaderUtils.getOptions(this);
   var catalog = gettextParser.po.parse(source, 'UTF-8');
 
   this.cacheable();
